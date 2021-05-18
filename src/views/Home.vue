@@ -1,56 +1,59 @@
 <template>
   <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-title>Budget</ion-title>
-      </ion-toolbar>
-    </ion-header>
-
-    <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Blank</ion-title>
-        </ion-toolbar>
-      </ion-header>
-
-      <div id="container">
-        <form-component type="fixed" title="fixed charges"/>
-      </div>
+    <header-component title="Dashboard" />
+    <ion-content>
+      <list-component v-if="loaded" />
+      <div v-else>En cours de chargement...</div>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import {
-  IonContent,
-  IonHeader,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/vue";
-import { defineComponent } from "vue";
-import FormComponent from "@/components/form.component.vue";
+import { IonContent, IonPage } from "@ionic/vue";
+import { closeCircleOutline } from "ionicons/icons";
+import { defineComponent, onMounted, ref } from "vue";
+import { budgets, monthShortNames } from "@/store/index";
+import HeaderComponent from "@/components/header.component.vue";
+import ListComponent from "@/components/list.component.vue";
+import { getBudgets } from "@/services/budgetsService";
 
 export default defineComponent({
   name: "Home",
   components: {
     IonContent,
-    IonHeader,
     IonPage,
-    IonTitle,
-    IonToolbar,
-    FormComponent,
+    HeaderComponent,
+    ListComponent,
+  },
+  setup() {
+    const loaded = ref(false);
+
+    onMounted(() => {
+      getBudgets().then((data) => {
+        if (data) {
+          budgets.value = data;
+        } else {
+          budgets.value = [];
+        }
+        loaded.value = true;
+      });
+    });
+    return {
+      loaded,
+      closeCircleOutline,
+    };
   },
 });
 </script>
 
 <style scoped>
-#container {
-  padding: 50px 25px;
+ion-content {
+  --padding-start: 10px;
+  --padding-end: 10px;
+  --padding-top: 10px;
 }
-
-
-#container a {
-  text-decoration: none;
+ion-fab-button {
+  width: 24px;
+  height: 24px;
 }
 </style>

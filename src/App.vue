@@ -5,21 +5,21 @@
 </template>
 
 <script lang="ts">
-import { IonApp, IonRouterOutlet } from '@ionic/vue';
-import { defineComponent } from 'vue';
+import { IonApp, IonRouterOutlet } from "@ionic/vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: 'App',
+  name: "App",
   components: {
     IonApp,
-    IonRouterOutlet
-  }
+    IonRouterOutlet,
+  },
 });
 </script>
 <style>
-*, *::before, *::after {
-  margin: 0;
-  padding: 0;
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 </style>

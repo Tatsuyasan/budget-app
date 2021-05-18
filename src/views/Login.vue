@@ -1,11 +1,10 @@
 <template>
   <ion-page>
     <ion-content
-      color="tertiary"
       force-overscroll="false"
       class="movie-container"
     >
-      <ion-text class="logo" color="secondary">
+      <ion-text class="logo">
         <h1>My budget</h1>
       </ion-text>
     </ion-content>

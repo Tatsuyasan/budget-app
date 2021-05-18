@@ -6,7 +6,6 @@
       expand="block"
       size="medium"
       strong
-      color="google"
       @click="logIn(LOGIN_PROVIDER.google)"
       :disabled="loading"
     >

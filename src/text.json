@@ -1,0 +1,17 @@
+[
+  {
+    "month": "january",
+    "year": "2020",
+    "startMoney": 0,
+    "salary": 0,
+    "fixedCharges": [
+      { "name": "", "value": 0 },
+      { "name": "", "value": 0 }
+    ],
+    "charges": [
+      { "name": "", "value": 0 },
+      { "name": "", "value": 0 }
+    ],
+    "outstandingAmount": 0
+  }
+]

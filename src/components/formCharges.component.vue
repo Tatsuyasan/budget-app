@@ -1,7 +1,7 @@
 <template>
   <section class="form-component">
     <div class="container">
-      <ion-text class="title" color="primary">
+      <ion-text v-if="title" class="title">
         <h2>{{ title }}</h2>
       </ion-text>
       <div class="container-input">
@@ -43,22 +43,15 @@
           </div>
         </div>
       </div>
-      <ion-button @click="submit" class="submit">Ajouter</ion-button>
     </div>
   </section>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, Ref, toRefs } from "vue";
-import {
-  IonInput,
-  IonFabButton,
-  IonIcon,
-  IonText,
-  IonButton,
-} from "@ionic/vue";
+import { IonInput, IonFabButton, IonIcon, IonText } from "@ionic/vue";
 import { addCircleOutline, removeCircleOutline } from "ionicons/icons";
-import { currentBudget } from "@/store";
+import { Charge } from "@/models/Budget";
 
 export default defineComponent({
   name: "FormComponent",
@@ -67,24 +60,29 @@ export default defineComponent({
     IonFabButton,
     IonIcon,
     IonText,
-    IonButton,
   },
   props: {
     title: {
       type: String,
-      default: "Titre du formulaire",
     },
-    type: {
-      type: String,
-      require: true,
+    data: {
+      type: Object as () => Charge[],
     },
   },
   setup(props) {
-    const input = { name: "", value: "" };
-    const form: Ref<Array<any>> = ref([input]);
+    const input = { name: "", value: 0 } as Charge;
+    const { data } = toRefs(props);
+    const form: Ref<Array<Charge>> = ref([]);
+    
+    if (data && data.value) {
+      if (data.value?.length === 0) form.value.push(input);
+      else form.value = data.value as Charge[];
+    } else {
+      form.value.push(input);
+    }
 
     const addInput = () => {
-      const input = { name: "", value: "" };
+      const input = { name: "", value: 0 };
       form.value.push(input);
     };
     const removeInput = (i: number) => {
@@ -93,28 +91,8 @@ export default defineComponent({
       }
     };
 
-    const submit = () => {
-      if (!currentBudget.value) {
-        return;
-      }
-
-      const array = form.value;
-      let result = 0;
-      array.forEach((item) => {
-        if (item.value) {
-          result += item.value;
-        }
-      });
-      switch (props.type) {
-        case "fixed":
-          currentBudget.value.fixedCharges = result;
-          break;
-        case "variable":
-          currentBudget.value.charges = result;
-          break;
-      }
-
-      console.log("currentBudget => ", currentBudget.value);
+    const getFormValue = () => {
+      return form;
     };
 
     return {
@@ -123,7 +101,7 @@ export default defineComponent({
       removeCircleOutline,
       addInput,
       removeInput,
-      submit,
+      getFormValue,
     };
   },
 });
@@ -153,7 +131,7 @@ export default defineComponent({
 }
 
 .container-input {
-    margin: 10px 0 ;
+  margin: 10px 0;
 }
 
 .name {
@@ -170,14 +148,6 @@ h2 {
   font-weight: 600;
   font-size: 20;
   margin: 0;
-}
-
-ion-input {
-  background: rgb(235, 235, 235);
-  border-radius: 50px;
-  margin: 5px 0;
-  --padding-end: 20px;
-  --padding-start: 20px;
 }
 
 .submit {

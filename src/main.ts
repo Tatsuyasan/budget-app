@@ -29,12 +29,18 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 
-const app = createApp(App)
-  .use(IonicVue)
-  .use(router);
-
+let app: any;
 firebase.initializeApp(firebaseConfig);
 
-router.isReady().then(() => {
-  app.mount('#app');
+firebase.auth().onAuthStateChanged(function(user) {
+  if (!app) {
+    /* eslint-disable no-new */
+    app = createApp(App)
+      .use(IonicVue)
+      .use(router);
+  }
+  
+  router.isReady().then(() => {
+    app.mount('#app');
+  });
 });

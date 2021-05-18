@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "948303830753",
+    "project_id": "budget-app-95687",
+    "storage_bucket": "budget-app-95687.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:948303830753:android:25a621c5e041366a1761a0",
+        "android_client_info": {
+          "package_name": "com.tecnniv.budgetapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "948303830753-0d3tc46iis94eu5gvf39621265i3vq5t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tecnniv.budgetapp",
+            "certificate_hash": "26cfa0c5d50eb7fd0b41bf1b70101d5e5ddc96c3"
+          }
+        },
+        {
+          "client_id": "948303830753-gkfqhhn27fhs814394nbd3e5ipoq3j4f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZ3xls2_fuPgWpiSkJV2Gb-bkFt4bRUZ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "948303830753-gkfqhhn27fhs814394nbd3e5ipoq3j4f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

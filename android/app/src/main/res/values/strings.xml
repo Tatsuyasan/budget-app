@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">budgetApp</string>
+    <string name="title_activity_main">budgetApp</string>
+    <string name="package_name">com.tecnniv.budgetapp</string>
+    <string name="custom_url_scheme">com.tecnniv.budgetapp</string>
+</resources>
