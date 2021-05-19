@@ -12,10 +12,10 @@
 import { IonContent, IonPage } from "@ionic/vue";
 import { closeCircleOutline } from "ionicons/icons";
 import { defineComponent, onMounted, ref } from "vue";
-import { budgets, monthShortNames } from "@/store/index";
+import { budgets } from "@/store/index";
 import HeaderComponent from "@/components/header.component.vue";
 import ListComponent from "@/components/list.component.vue";
-import { getBudgets } from "@/services/budgetsService";
+import { getBudgetsService } from "@/services/budgetsService";
 
 export default defineComponent({
   name: "Home",
@@ -29,12 +29,13 @@ export default defineComponent({
     const loaded = ref(false);
 
     onMounted(() => {
-      getBudgets().then((data) => {
+      getBudgetsService().then((data) => {
         if (data) {
           budgets.value = data;
         } else {
           budgets.value = [];
         }
+        console.log("budget.value is filled");
         loaded.value = true;
       });
     });

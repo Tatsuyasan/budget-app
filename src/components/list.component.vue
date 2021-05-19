@@ -6,11 +6,6 @@
         <ion-button class="btn" @click="createBudget">
           Create budget
         </ion-button>
-        <ion-button class="btn" @click="editBudget"> Edit budget </ion-button>
-        <ion-button class="btn" @click="addVariableCharges">
-          addVariableCharges
-        </ion-button>
-        <ion-button class="btn" @click="addBudget"> historic </ion-button>
       </div>
     </ion-content>
     <ion-card
@@ -29,7 +24,7 @@
       <ion-card-content>
         <ion-text
         class="leftovers"
-          :color="budget.leftovers > 0 ? 'success' : 'danger'"
+          :color="budget.leftovers >= 0 ? 'success' : 'danger'"
           v-if="budget"
         >
           {{ budget.leftovers }}
@@ -55,7 +50,7 @@ import {
 } from "@ionic/vue";
 import { useRouter } from "vue-router";
 import { budgets, currentBudget, getLastBudget } from "@/store";
-import { getBudgets } from "@/services/budgetsService";
+import { getBudgetsService } from "@/services/budgetsService";
 
 export default defineComponent({
   name: "ListComponent",

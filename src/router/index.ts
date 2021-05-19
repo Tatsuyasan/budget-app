@@ -5,7 +5,7 @@ import Login from '@/views/Login.vue';
 import CreateBudget from '@/views/CreateBudget.vue';
 import EditBudget from '@/views/EditBudget.vue';
 import VariableCharges from '@/views/VariableCharges.vue';
-import { budgets, currentBudget } from '@/store';
+import { budgets } from '@/store';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -45,7 +45,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  console.log('current Budgets => ', budgets.value);
+  console.log(`current Budgets | ${String(to.name)} | `, budgets.value);
   next();
 });
 

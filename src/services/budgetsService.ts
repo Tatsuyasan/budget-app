@@ -1,10 +1,11 @@
 import { Budget } from '@/models/Budget';
-import { budgets } from '@/store';
+import { budgets, sortBudgetByMonthYear } from '@/store';
 import firebase from 'firebase/app';
 
-export const addBudget = async (budget: Budget) => {
+export const addBudgetService = async (budget: Budget) => {
   if (budgets.value && budget) {
-    budgets.value = [budget, ...budgets.value];
+    budgets.value = [...budgets.value, budget];
+    sortBudgetByMonthYear();
     const budgetRef = firebase
       .firestore()
       .collection('budgets')
@@ -16,7 +17,7 @@ export const addBudget = async (budget: Budget) => {
   }
 };
 
-export const updateBudget = async (budget: Budget, index: number) => {
+export const updateBudgetService = async (budget: Budget, index: number) => {
   if (budgets.value && budget) {
     budgets.value[index] = budget;
     const budgetRef = firebase
@@ -30,7 +31,7 @@ export const updateBudget = async (budget: Budget, index: number) => {
   }
 };
 
-export const getBudgets = async (): Promise<Budget[] | null> => {
+export const getBudgetsService = async (): Promise<Budget[] | null> => {
   const query = firebase.firestore().collection('budgets');
   try {
     const data = await query.doc(firebase.auth().currentUser?.uid).get();

@@ -8,7 +8,7 @@
         :data="budget.variableCharges"
         title="variable"
       />
-      <ion-button @click="addCharges">create</ion-button>
+      <ion-button @click="addCharges">Add</ion-button>
     </ion-content>
   </ion-page>
 </template>
@@ -19,9 +19,9 @@ import { IonPage, IonContent, IonButton } from "@ionic/vue";
 import { useRoute, useRouter } from "vue-router";
 import { defineComponent, ref } from "vue";
 import BackNavButtonComponent from "@/components/backNavButton.component.vue";
-import { budgets, currentBudget } from "@/store";
-import { Budget, Charge } from "@/models/Budget";
-import { updateBudget } from "@/services/budgetsService";
+import { budgets, getBudgetByMonthYear } from "@/store";
+import { Charge } from "@/models/Budget";
+import { updateBudgetService } from "@/services/budgetsService";
 
 export default defineComponent({
   name: "VariableCharges",
@@ -40,9 +40,7 @@ export default defineComponent({
       throw new Error("Something is empty !");
     }
 
-    const budget = budgets.value?.find((budget: Budget) => {
-      return budget.year == year && budget.month == month;
-    });
+    const budget = getBudgetByMonthYear(year, month);
 
     if (!budget) {
       throw new Error("budget is empty !");
@@ -74,7 +72,7 @@ export default defineComponent({
 
       const index = budgets.value?.indexOf(budget) as number;
 
-      await updateBudget(budget, index);
+      await updateBudgetService(budget, index);
 
       back();
     };

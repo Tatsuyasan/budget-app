@@ -1,7 +1,7 @@
 <template>
   <ion-page>
     <ion-content class="budget">
-      <back-nav-button-component label="Create your budget" />
+      <back-nav-button-component label="Edit your budget" />
       <ion-text
         ><h1>Budget {{ month }} {{ year }}</h1></ion-text
       >
@@ -33,23 +33,30 @@
         :data="budget.fixedCharges"
         title="fixed"
       />
-      <ion-button @click="createBudget">create</ion-button>
+      <ion-button @click="editBudget">Edit</ion-button>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
 import FormChargesComponent from "@/components/formCharges.component.vue";
-import { IonPage, IonContent, IonLabel, IonInput, IonButton } from "@ionic/vue";
+import {
+  IonPage,
+  IonContent,
+  IonLabel,
+  IonInput,
+  IonButton,
+  IonText,
+} from "@ionic/vue";
 import { useRoute, useRouter } from "vue-router";
 import { defineComponent, ref } from "vue";
 import BackNavButtonComponent from "@/components/backNavButton.component.vue";
-import { currentBudget } from "@/store";
-import { Budget, Charge } from "@/models/Budget";
-import { addBudget } from "@/services/budgetsService";
+import { budgets, currentBudget, getBudgetByMonthYear } from "@/store";
+import { Budget } from "@/models/Budget";
+import { updateBudgetService } from "@/services/budgetsService";
 
 export default defineComponent({
-  name: "Budget",
+  name: "EditBudget",
   components: {
     IonPage,
     IonContent,
@@ -58,6 +65,7 @@ export default defineComponent({
     IonInput,
     IonButton,
     BackNavButtonComponent,
+    IonText,
   },
   setup() {
     const router = useRouter();
@@ -65,87 +73,63 @@ export default defineComponent({
     const today = new Date();
     const day = today.getDate();
     const startMoney = ref(0);
-    const budget = ref({} as Budget);
     const outstandingAmount = ref(0);
     const outstandingAmountLastMonth = ref(0);
     const salary = ref(0);
     const fixedRef = ref<InstanceType<typeof FormChargesComponent>>();
-    const variableRef = ref<InstanceType<typeof FormChargesComponent>>();
     const year = parseInt(route.params.year as string);
     const month = route.params.month as string;
 
-    if (year && month) {
-      // var result = jsObjects.filter((obj) => {
-      //   return obj.b === 6;
-      // });
+    if (!year && !month) {
+      throw new Error("Year or month params doesn't exist !");
     }
 
-    if (!currentBudget.value) {
-      budget.value = {
-        month: month,
-        year: year,
-        startMoney: 50,
-        salary: 50,
-        fixedCharges: [{ name: "restau", value: 25 }] as Charge[],
-        variableCharges: [] as Charge[],
-        outstandingAmount: 25,
-        outstandingAmountLastMonth: 0,
-        leftovers: 0,
-        leftoversWithoutVariableCharges: 0,
-      };
-    } else {
-      budget.value = {
-        month: currentBudget.value.month,
-        year: currentBudget.value.year,
-        startMoney: currentBudget.value.startMoney,
-        salary: currentBudget.value.salary,
-        fixedCharges: currentBudget.value.fixedCharges as Charge[],
-        variableCharges: currentBudget.value.variableCharges as Charge[],
-        outstandingAmount: currentBudget.value.outstandingAmount,
-        outstandingAmountLastMonth:
-          currentBudget.value.outstandingAmountLastMonth,
-        leftovers: currentBudget.value.leftovers,
-        leftoversWithoutVariableCharges:
-          currentBudget.value.leftoversWithoutVariableCharges,
-      };
+    const budget = getBudgetByMonthYear(year, month) as Budget;
+
+    if (!budget) {
+      throw new Error("budget doesn't exist !");
     }
 
     const back = () => {
       router.back();
     };
 
-    const createBudget = async () => {
+    const editBudget = async () => {
       const fixedCharges = fixedRef.value?.getFormValue();
 
-      budget.value.leftoversWithoutVariableCharges =
-        budget.value.startMoney +
-        budget.value.salary -
-        (budget.value.outstandingAmount +
-          budget.value.outstandingAmountLastMonth);
+      budget.leftoversWithoutVariableCharges =
+        budget.startMoney +
+        budget.salary -
+        (budget.outstandingAmount + budget.outstandingAmountLastMonth);
 
       if (!fixedCharges) {
         console.log("fixedCharges are undefined");
         return;
       }
-      budget.value.fixedCharges = fixedCharges.value;
+      budget.fixedCharges = fixedCharges.value;
 
       fixedCharges.value.forEach((charge) => {
-        budget.value.leftoversWithoutVariableCharges -= charge.value;
+        budget.leftoversWithoutVariableCharges -= charge.value;
       });
 
-      budget.value.leftovers = budget.value.leftoversWithoutVariableCharges;
+      budget.leftovers = budget.leftoversWithoutVariableCharges;
 
-      currentBudget.value = budget.value;
+      if (budget.variableCharges) {
+        budget.variableCharges.forEach((charge) => {
+          budget.leftovers -= charge.value;
+        });
+      }
 
-      await addBudget(budget.value).then(() => {
+      const index = budgets.value?.indexOf(budget) as number;
+
+      await updateBudgetService(budget, index).then(() => {
         back();
       });
     };
     return {
       back,
-      createBudget,
+      editBudget,
       fixedRef,
-      variableRef,
       startMoney,
       outstandingAmount,
       salary,

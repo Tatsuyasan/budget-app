@@ -39,8 +39,8 @@ firebase.auth().onAuthStateChanged(function(user) {
       .use(IonicVue)
       .use(router);
   }
-  
-  router.isReady().then(() => {
-    app.mount('#app');
-  });
+});
+
+router.isReady().then(() => {
+  app.mount('#app');
 });

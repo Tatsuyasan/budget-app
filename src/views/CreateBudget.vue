@@ -8,6 +8,7 @@
           display-format="MMM YYYY"
           placeholder="Select Date"
           :month-short-names="monthShortNames"
+          @ionChange="datetime"
         ></ion-datetime>
       </div>
       <div class="currentMoney">
@@ -44,17 +45,26 @@
 </template>
 
 <script lang="ts">
-import { IonPage, IonContent, IonLabel, IonInput, IonButton, IonDatetime } from "@ionic/vue";
-import { useRoute, useRouter } from "vue-router";
-import { defineComponent, ref } from "vue";
+import {
+  IonPage,
+  IonContent,
+  IonLabel,
+  IonInput,
+  IonButton,
+  IonDatetime,
+} from "@ionic/vue";
+import { useRouter } from "vue-router";
+import { defineComponent, Ref, ref } from "vue";
 import BackNavButtonComponent from "@/components/backNavButton.component.vue";
-import { currentBudget, monthShortNames } from "@/store";
+import { currentBudget, getBudgetByMonthYear, monthShortNames } from "@/store";
 import { Budget, Charge } from "@/models/Budget";
-import { addBudget } from "@/services/budgetsService";
+import { addBudgetService } from "@/services/budgetsService";
 import FormChargesComponent from "@/components/formCharges.component.vue";
+import { Plugins } from "@capacitor/core";
+const { Toast } = Plugins;
 
 export default defineComponent({
-  name: "Budget",
+  name: "CreateBudget",
   components: {
     IonPage,
     IonContent,
@@ -63,7 +73,7 @@ export default defineComponent({
     IonInput,
     IonButton,
     BackNavButtonComponent,
-    IonDatetime
+    IonDatetime,
   },
   setup() {
     const router = useRouter();
@@ -71,6 +81,8 @@ export default defineComponent({
     const day = today.getDate();
     const month = today.toLocaleString("default", { month: "long" });
     const year = today.getFullYear();
+    const choosenMonth = ref(null) as Ref<string | null>;
+    const choosenYear = ref(null) as Ref<number | null>;
     const startMoney = ref(0);
     const budget = ref({} as Budget);
     const outstandingAmount = ref(0);
@@ -79,38 +91,44 @@ export default defineComponent({
     const fixedRef = ref<InstanceType<typeof FormChargesComponent>>();
     const variableRef = ref<InstanceType<typeof FormChargesComponent>>();
 
-    if (!currentBudget.value) {
-      budget.value = {
-        month: month,
-        year: year,
-        startMoney: 50,
-        salary: 50,
-        fixedCharges: [{ name: "restau", value: 25 }] as Charge[],
-        variableCharges: [] as Charge[],
-        outstandingAmount: 25,
-        outstandingAmountLastMonth: 0,
-        leftovers: 0,
-        leftoversWithoutVariableCharges: 0,
-      };
-    } else {
-      budget.value = {
-        month: currentBudget.value.month,
-        year: currentBudget.value.year,
-        startMoney: currentBudget.value.startMoney,
-        salary: currentBudget.value.salary,
-        fixedCharges: currentBudget.value.fixedCharges as Charge[],
-        variableCharges: currentBudget.value.variableCharges as Charge[],
-        outstandingAmount: currentBudget.value.outstandingAmount,
-        outstandingAmountLastMonth:
-          currentBudget.value.outstandingAmountLastMonth,
-        leftovers: currentBudget.value.leftovers,
-        leftoversWithoutVariableCharges:
-          currentBudget.value.leftoversWithoutVariableCharges,
-      };
-    }
+    budget.value = {
+      month: month,
+      year: year,
+      startMoney: 50,
+      salary: 50,
+      fixedCharges: [{ name: "restau", value: 25 }] as Charge[],
+      variableCharges: [] as Charge[],
+      outstandingAmount: 25,
+      outstandingAmountLastMonth: 0,
+      leftovers: 0,
+      leftoversWithoutVariableCharges: 0,
+    };
 
     const back = () => {
       router.back();
+    };
+    const test = () => {
+      console.log("TESTTEST");
+    };
+    const datetime = (e: CustomEvent) => {
+      const datetime = e.detail.value as string;
+      const partsDatetime: Array<string> = datetime.split("-");
+      const monthNumber = parseInt(partsDatetime[1]) - 1;
+      choosenYear.value = parseInt(partsDatetime[0]);
+      choosenMonth.value = monthShortNames[monthNumber];
+
+      const result = getBudgetByMonthYear(
+        choosenYear.value,
+        choosenMonth.value
+      );
+      if (!result) {
+        budget.value.year = choosenYear.value;
+        budget.value.month = choosenMonth.value;
+      } else {
+        Toast.show({
+          text: "There is already a budget for this date, choose another one.",
+        });
+      }
     };
 
     const createBudget = async () => {
@@ -136,9 +154,23 @@ export default defineComponent({
 
       currentBudget.value = budget.value;
 
-      await addBudget(budget.value).then(() => {
-        back();
-      });
+      if (choosenYear.value && choosenMonth.value) {
+        const result = getBudgetByMonthYear(
+          choosenYear.value,
+          choosenMonth.value
+        );
+        if (result) {
+          Toast.show({
+            text:
+              "There is already a budget for this date, choose another one.",
+          });
+          console.log("There is already a budget for this date, choose another Date.");
+        } else {
+          await addBudgetService(budget.value).then(() => {
+            back();
+          });
+        }
+      }
     };
     return {
       back,
@@ -152,14 +184,19 @@ export default defineComponent({
       outstandingAmountLastMonth,
       day,
       budget,
-      monthShortNames
+      monthShortNames,
+      datetime,
+      test,
     };
   },
 });
 </script>
 
 <style scoped>
-.currentMoney, .date, .salary, .outstandingAmount {
+.currentMoney,
+.date,
+.salary,
+.outstandingAmount {
   display: flex;
   justify-content: center;
   align-items: center;
