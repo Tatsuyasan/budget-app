@@ -16,7 +16,7 @@
     >
       <ion-card-header>
         <ion-card-title
-          >Budgets {{ budget.month }} {{ budget.year }}
+          >{{ budget.month }} {{ budget.year }}
         </ion-card-title>
         <ion-card-title>Leftovers</ion-card-title>
       </ion-card-header>
