@@ -2,6 +2,11 @@
   <ion-page>
     <header-component title="Dashboard" />
     <ion-content>
+      <div class="container-buttons">
+        <ion-button class="btn" @click="createBudget">
+          Create budget
+        </ion-button>
+      </div>
       <list-component v-if="loaded" />
       <div v-else>En cours de chargement...</div>
     </ion-content>
@@ -9,13 +14,14 @@
 </template>
 
 <script lang="ts">
-import { IonContent, IonPage } from "@ionic/vue";
+import { IonContent, IonPage, IonButton } from "@ionic/vue";
 import { closeCircleOutline } from "ionicons/icons";
 import { defineComponent, onMounted, ref } from "vue";
 import { budgets } from "@/store/index";
 import HeaderComponent from "@/components/header.component.vue";
 import ListComponent from "@/components/list.component.vue";
 import { getBudgetsService } from "@/services/budgetsService";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "Home",
@@ -24,9 +30,15 @@ export default defineComponent({
     IonPage,
     HeaderComponent,
     ListComponent,
+    IonButton,
   },
   setup() {
     const loaded = ref(false);
+    const router = useRouter();
+
+    const createBudget = () => {
+      router.push("/createBudget");
+    };
 
     onMounted(() => {
       getBudgetsService().then((data) => {
@@ -42,6 +54,7 @@ export default defineComponent({
     return {
       loaded,
       closeCircleOutline,
+      createBudget,
     };
   },
 });

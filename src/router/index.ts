@@ -5,6 +5,7 @@ import Login from '@/views/Login.vue';
 import CreateBudget from '@/views/CreateBudget.vue';
 import EditBudget from '@/views/EditBudget.vue';
 import VariableCharges from '@/views/VariableCharges.vue';
+import DetailBudget from '@/views/DetailBudget.vue';
 import { budgets } from '@/store';
 
 const routes: Array<RouteRecordRaw> = [
@@ -36,6 +37,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/VariableCharges/:year/:month',
     name: 'VariableCharges',
     component: VariableCharges,
+  },
+  {
+    path: '/detail/:year/:month',
+    name: 'DetailBudget',
+    component: DetailBudget,
   },
 ];
 
