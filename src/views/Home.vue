@@ -17,7 +17,7 @@
           <list-component />
         </ion-slide>
         <ion-slide>
-          <h1>Slide 2</h1>
+          <h1>Second écran pour les budgets sans les calcules de salaire ( par exemple un budget pour pendant les vacances, ect ) </h1>
         </ion-slide>
       </ion-slides>
       <div v-else>En cours de chargement...</div>
@@ -61,7 +61,10 @@ export default defineComponent({
 
     const createBudget = () => {
       if (slide.value === 0) router.push("/createBudget");
-      if (slide.value === 1) console.log("Go to creation budget simple ( sans calcul avec salaire ect )");
+      if (slide.value === 1)
+        console.log(
+          "Go to creation budget simple ( sans calcul avec salaire ect )"
+        );
     };
 
     const ionSlideDidChange = (e: any) => {
