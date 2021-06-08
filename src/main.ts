@@ -29,6 +29,16 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 
+/* Internalisation */
+import { createI18n } from 'vue-i18n';
+import { messages, defaultLocale } from './trad/i18n';
+
+const i18n = createI18n({
+  messages,
+  locale: defaultLocale,
+  fallbackLocale: defaultLocale,
+});
+
 let app: any;
 firebase.initializeApp(firebaseConfig);
 
@@ -37,7 +47,8 @@ firebase.auth().onAuthStateChanged(function(user) {
     /* eslint-disable no-new */
     app = createApp(App)
       .use(IonicVue)
-      .use(router);
+      .use(router)
+      .use(i18n);
   }
 });
 

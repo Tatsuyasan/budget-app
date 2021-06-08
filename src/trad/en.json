@@ -1,0 +1,17 @@
+{
+  "cta": {
+    "edit": "Edit",
+    "add": "Add charges"
+  },
+  "startMoney": "Start Money",
+  "salary": "Salary",
+  "outstandingAmount": "Outstanding amount",
+  "outstandingAmountLastMonth": "Outstanding amount for the last month",
+  "fixedCharges": "Fixed charges",
+  "variableCharges": "variableCharges",
+  "editBudget": "editBudget",
+  "createBudget": "createBudget",
+  "addCharge": "addCharge",
+  "detail": "detail",
+  "leftovers": "Leftovers"
+}

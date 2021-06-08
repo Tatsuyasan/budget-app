@@ -1,0 +1,17 @@
+{
+  "cta": {
+      "edit": "Éditer",
+      "add": "Ajout de charges"
+  },
+  "startMoney":"Argent en début de mois",
+  "salary":"Salaire",
+  "outstandingAmount":"Encours",
+  "outstandingAmountLastMonth":"Encours du mois précedent",
+  "fixedCharges":"Charges fixes",
+  "variableCharges":"Charges variables",
+  "editBudget":"Édites ton budget",
+  "createBudget":"Créé ton budget",
+  "addCharge":"Ajoutes des charges",
+  "detail":"Détail",
+  "leftovers": "Restes"
+}

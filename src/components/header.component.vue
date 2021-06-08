@@ -1,6 +1,6 @@
 
 <template>
-  <ion-header class="ion-no-border">
+  <ion-header class="ion-no-border header">
     <ion-toolbar color="secondary-shade">
       <ion-title color="primary">{{ title }}</ion-title>
     </ion-toolbar>
@@ -32,4 +32,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.header {
+  height: 5vh;
+}
 </style>

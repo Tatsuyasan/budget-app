@@ -1,7 +1,7 @@
 <template>
   <ion-page>
     <ion-content class="budget">
-      <back-nav-button-component label="Create your budget" />
+      <back-nav-button-component :label="$t('createBudget')" />
       <div class="date">
         <ion-label>Select a date:</ion-label>
         <ion-datetime

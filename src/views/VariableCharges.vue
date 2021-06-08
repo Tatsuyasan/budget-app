@@ -1,14 +1,14 @@
 <template>
   <ion-page>
     <ion-content class="variable-charges">
-      <back-nav-button-component label="Add charges" />
+      <back-nav-button-component :label="$t('addCharge')" />
 
       <form-charges-component
         ref="variableRef"
         :data="budget.variableCharges"
-        title="variable"
+        :title="$t('variableCharges')"
       />
-      <ion-button @click="addCharges">Add</ion-button>
+      <ion-button @click="addCharges">{{ $t("cta.add") }}</ion-button>
     </ion-content>
   </ion-page>
 </template>

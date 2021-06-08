@@ -28,10 +28,9 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.dashboard ion-content {
-  --padding-start: 0;
-  --padding-end: 0;
-  --padding-top: 0;
+.dashboard {
+  width: 100vw;
+  padding: 5vw;
 }
 
 .card {

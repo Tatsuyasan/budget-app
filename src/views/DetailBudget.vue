@@ -1,7 +1,7 @@
 <template>
   <ion-page>
     <ion-content class="detail">
-      <back-nav-button-component label="Detail" />
+      <back-nav-button-component :label="$t('detail')" />
       <div>
         <ion-text
           >Les details du budget, avec peut être un graph pour illustrer

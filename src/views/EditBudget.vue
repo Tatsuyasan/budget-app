@@ -1,27 +1,27 @@
 <template>
   <ion-page>
     <ion-content class="budget">
-      <back-nav-button-component label="Edit your budget" />
+      <back-nav-button-component :label="$t('editBudget')" />
       <ion-text
         ><h1>Budget {{ month }} {{ year }}</h1></ion-text
       >
       <div class="currentMoney">
-        <ion-label>startMoney</ion-label>
+        <ion-label>{{ $t("startMoney") }}</ion-label>
         <ion-input v-model.number="budget.startMoney" type="number"></ion-input>
       </div>
       <div class="salary">
-        <ion-label>salary</ion-label>
+        <ion-label>{{ $t("salary") }}</ion-label>
         <ion-input v-model.number="budget.salary" type="number"></ion-input>
       </div>
       <div v-if="day < 4" class="outstandingAmount">
-        <ion-label>outstandingAmountLastMonth</ion-label>
+        <ion-label>{{ $t("outstandingAmountLastMonth") }}</ion-label>
         <ion-input
           v-model.number="budget.outstandingAmountLastMonth"
           type="number"
         ></ion-input>
       </div>
       <div class="outstandingAmount">
-        <ion-label>outstandingAmount</ion-label>
+        <ion-label>{{ $t("outstandingAmount") }}</ion-label>
         <ion-input
           v-model.number="budget.outstandingAmount"
           type="number"
@@ -31,9 +31,9 @@
       <form-charges-component
         ref="fixedRef"
         :data="budget.fixedCharges"
-        title="fixed"
+        :title="$t('fixedCharges')"
       />
-      <ion-button @click="editBudget">Edit</ion-button>
+      <ion-button @click="editBudget">{{ $t("cta.edit") }}</ion-button>
     </ion-content>
   </ion-page>
 </template>

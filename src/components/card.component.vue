@@ -1,8 +1,12 @@
 <template>
-  <ion-card color="secondary" class="card" @click="detailBudget(budget.month, budget.year)">
+  <ion-card
+    color="secondary"
+    class="card"
+    @click="detailBudget(budget.month, budget.year)"
+  >
     <ion-card-header>
       <ion-card-title>{{ budget.month }} {{ budget.year }} </ion-card-title>
-      <ion-card-title>Leftovers</ion-card-title>
+      <ion-card-title>{{ $t("leftovers") }}</ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
@@ -14,12 +18,12 @@
         {{ budget.leftovers }}
       </ion-text>
       <br />
-      <ion-button @click.stop="editBudget(budget.month, budget.year)"
-        >edit budget</ion-button
-      >
-      <ion-button @click.stop="addVariableCharges(budget.month, budget.year)"
-        >Add charges</ion-button
-      >
+      <ion-button @click.stop="editBudget(budget.month, budget.year)">{{
+        $t("cta.edit")
+      }}</ion-button>
+      <ion-button @click.stop="addVariableCharges(budget.month, budget.year)">{{
+        $t("cta.add")
+      }}</ion-button>
     </ion-card-content>
   </ion-card>
 </template>
@@ -64,7 +68,7 @@ export default defineComponent({
     };
 
     const detailBudget = (month: string, year: string) => {
-        router.push(`/detail/${year}/${month}`);
+      router.push(`/detail/${year}/${month}`);
     };
 
     return { addVariableCharges, editBudget, detailBudget };
