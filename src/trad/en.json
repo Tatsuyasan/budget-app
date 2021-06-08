@@ -1,7 +1,8 @@
 {
   "cta": {
     "edit": "Edit",
-    "add": "Add charges"
+    "add": "Add charges",
+    "create": "Create"
   },
   "startMoney": "Start Money",
   "salary": "Salary",
@@ -13,5 +14,6 @@
   "createBudget": "createBudget",
   "addCharge": "addCharge",
   "detail": "detail",
-  "leftovers": "Leftovers"
+  "leftovers": "Leftovers",
+  "selectDate": "Date"
 }

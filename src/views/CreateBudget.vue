@@ -12,22 +12,22 @@
         ></ion-datetime>
       </div>
       <div class="currentMoney">
-        <ion-label>startMoney</ion-label>
+        <ion-label>{{ $t("startMoney") }}</ion-label>
         <ion-input v-model.number="budget.startMoney" type="number"></ion-input>
       </div>
       <div class="salary">
-        <ion-label>salary</ion-label>
+        <ion-label>{{ $t("salary") }}</ion-label>
         <ion-input v-model.number="budget.salary" type="number"></ion-input>
       </div>
       <div v-if="day < 4" class="outstandingAmount">
-        <ion-label>outstandingAmountLastMonth</ion-label>
+        <ion-label>{{ $t("outstandingAmountLastMonth") }}</ion-label>
         <ion-input
           v-model.number="budget.outstandingAmountLastMonth"
           type="number"
         ></ion-input>
       </div>
       <div class="outstandingAmount">
-        <ion-label>outstandingAmount</ion-label>
+        <ion-label>{{ $t("outstandingAmount") }}</ion-label>
         <ion-input
           v-model.number="budget.outstandingAmount"
           type="number"
@@ -37,9 +37,9 @@
       <form-charges-component
         ref="fixedRef"
         :data="budget.fixedCharges"
-        title="fixed"
+        :title="$t('fixedCharges')"
       />
-      <ion-button @click="createBudget">create</ion-button>
+      <ion-button @click="createBudget">{{ $t("create") }}</ion-button>
     </ion-content>
   </ion-page>
 </template>
@@ -161,10 +161,11 @@ export default defineComponent({
         );
         if (result) {
           Toast.show({
-            text:
-              "There is already a budget for this date, choose another one.",
+            text: "There is already a budget for this date, choose another one.",
           });
-          console.log("There is already a budget for this date, choose another Date.");
+          console.log(
+            "There is already a budget for this date, choose another Date."
+          );
         } else {
           await addBudgetService(budget.value).then(() => {
             back();
